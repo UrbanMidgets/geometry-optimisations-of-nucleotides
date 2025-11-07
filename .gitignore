@@ -1,0 +1,16 @@
+# ORCA output files
+*.gbw
+*.densities
+*.pse
+
+# Python environment
+venv/
+__pycache__/
+*.pyc
+
+# Computational chemistry outputs
+*.out
+*.inp
+*.hess
+*.xyz
+!Data/**/*.xyz  # Keep xyz files in Data directory

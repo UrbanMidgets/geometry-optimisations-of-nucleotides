@@ -1,0 +1,72 @@
+#!/bin/bash
+#SBATCH --job-name=frame01
+#SBATCH -e /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01-%j.err
+#SBATCH -o /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01-%j.err
+#SBATCH --nodes=1
+##SBATCH --exclude=node[345-349],node[461-485]
+#SBATCH --exclude=node[345-349],node[213],node[221],node[461-485]
+##SBATCH --cpus-per-task=12
+#SBATCH --tasks-per-node=12
+#SBATCH --mem=30"gb"
+#SBATCH -t 10000:00:00
+#SBATCH -p chem
+#SBATCH --mail-user=wbn215@alumni.ku.dk
+#SBATCH --mail-type=BEGIN,END,FAIL
+
+export PATH=/software/kemi/Orca/orca_6_1_0:/software/kemi/openmpi/openmpi-4.1.1/bin:/lustre/hpc/software/kemi/pmix/pmix-5.0.3/install/bin:/lustre/hpc/software/kemi/quantum-espresso/qe-7.3.1/QERaman/bin:/lustre/hpc/software/kemi/quantum-espresso/qe-7.3.1/bin:/lustre/hpc/software/kemi/openmpi/openmpi-5.0.5/install/bin:/groups/kemi/wbn215/apps/orca_6.1.0:/groups/kemi/wbn215/apps/orca_6.1.0/orca:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/groups/kemi/wbn215/bin
+export LD_LIBRARY_PATH=/software/kemi/Orca/orca_6_1_0/lib:/software/kemi/openmpi/openmpi-4.1.1/lib:/lustre/hpc/software/kemi/pmix/pmix-5.0.3/install/lib:/lustre/hpc/software/kemi/quantum-espresso/qe-7.3.1/lib:/lustre/hpc/software/local/intel/parallel_studio_xe_2020_upd4/compilers_and_libraries_2020.4.304/linux/compiler/lib/intel64_lin:/lustre/hpc/software/local/intel/parallel_studio_xe_2020_upd4/compilers_and_libraries_2020.4.304/linux/mkl/lib/intel64:/lustre/hpc/software/kemi/openmpi/openmpi-5.0.5/install/lib
+export ORCA=/software/kemi/Orca/orca_6_1_0/orca
+
+# set scratch dir
+SCRATCH=/scratch/$SLURM_JOB_ID
+# make scratch dir
+mkdir -p $SCRATCH || exit 0
+ 
+#
+# Define backup function
+#
+backup () {
+  if [ "$1" = "-v" ]; then ekko=1; shift
+  else ekko=0;
+  fi
+  for i in $* ; do
+     if [ -f "${i}" ]; then
+        for j in 6 5 4 3 2 1 0 ; do
+           jp=$(($j+1))
+           if [ -f "${i}.${j}" ]; then
+              [ $ekko -eq 1 ] && echo "Backup: renaming ${i}.${j} to ${i}.${jp}"
+              mv -f "${i}.${j}" "${i}.${jp}"
+           fi
+        done
+        if [ $ekko -eq 1 ]; then echo "Backup: renaming ${i} to ${i}.0"; fi
+        mv -f "${i}" "${i}.0"
+     fi
+  done
+}
+
+#
+# Backup output file
+#
+backup frame01.out
+
+#
+# Prepare input for parallel execution
+#
+
+#sed -i '/! PAL/ d' frame01.inp
+#sed -i "1i\! PAL12" frame01.inp
+
+echo "Running on " hostname > /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01.out
+date >> /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01.out
+#ldd $ORCA
+cd $SCRATCH
+cp /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01.inp .
+$ORCA frame01.inp >> /groups/kemi/wbn215/orca_tests/flower_cmp/frame01/frame01.out
+
+# done, now copy back wanted files.
+cp frame01.xyz /groups/kemi/wbn215/orca_tests/flower_cmp/frame01
+cp frame01.gbw /groups/kemi/wbn215/orca_tests/flower_cmp/frame01
+cp frame01.cube /groups/kemi/wbn215/orca_tests/flower_cmp/frame01
+cp frame01.vpt2 /groups/kemi/wbn215/orca_tests/flower_cmp/frame01
+cp frame01.txt /groups/kemi/wbn215/orca_tests/flower_cmp/frame01
+cp 01-Orbitals.molden /groups/kemi/wbn215/orca_tests/flower_cmp/frame01

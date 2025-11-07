@@ -1,0 +1,93 @@
+#!/bin/bash
+argv="$1";shift; QUEUE=$argv
+argv="$1";shift; CORES=$argv
+argv="$1";shift; MEM=$argv
+argv="$1";shift; IN=$argv
+
+# get the filename without the extension
+JOB=${IN%.*}
+
+SUBMIT=qsub.tmp
+PWD=`pwd`
+
+if [ $QUEUE == "nanogeo2" ]; then
+        TIME=167:00:00
+else
+        TIME=10000:00:00
+fi
+
+cat > $SUBMIT <<!EOF
+#!/bin/bash
+#SBATCH --job-name=$JOB
+#SBATCH -e `pwd`/$JOB-%j.err
+#SBATCH -o `pwd`/$JOB-%j.err
+#SBATCH --nodes=1
+##SBATCH --exclude=node[345-349],node[461-485]
+#SBATCH --exclude=node[345-349],node[213],node[221],node[461-485]
+##SBATCH --cpus-per-task=$CORES
+#SBATCH --tasks-per-node=$CORES
+#SBATCH --mem=$MEM"gb"
+#SBATCH -t $TIME
+#SBATCH -p $QUEUE
+
+export PATH=/software/kemi/Orca/orca_6_1_0:/software/kemi/openmpi/openmpi-4.1.1/bin:$PATH
+export LD_LIBRARY_PATH=/software/kemi/Orca/orca_6_1_0/lib:/software/kemi/openmpi/openmpi-4.1.1/lib:$LD_LIBRARY_PATH
+export ORCA=/software/kemi/Orca/orca_6_1_0/orca
+
+# set scratch dir
+SCRATCH=/scratch/\$SLURM_JOB_ID
+# make scratch dir
+mkdir -p \$SCRATCH || exit $?
+ 
+#
+# Define backup function
+#
+backup () {
+  if [ "\$1" = "-v" ]; then ekko=1; shift
+  else ekko=0;
+  fi
+  for i in \$* ; do
+     if [ -f "\${i}" ]; then
+        for j in 6 5 4 3 2 1 0 ; do
+           jp=\$((\$j+1))
+           if [ -f "\${i}.\${j}" ]; then
+              [ \$ekko -eq 1 ] && echo "Backup: renaming \${i}.\${j} to \${i}.\${jp}"
+              mv -f "\${i}.\${j}" "\${i}.\${jp}"
+           fi
+        done
+        if [ \$ekko -eq 1 ]; then echo "Backup: renaming \${i} to \${i}.0"; fi
+        mv -f "\${i}" "\${i}.0"
+     fi
+  done
+}
+
+#
+# Backup output file
+#
+backup $JOB.out
+
+#
+# Prepare input for parallel execution
+#
+
+#sed -i '/! PAL/ d' $JOB.inp
+#sed -i "1i\! PAL$CORES" $JOB.inp
+
+echo "Running on " hostname > $PWD/$JOB.out
+date >> $PWD/$JOB.out
+#ldd \$ORCA
+cd \$SCRATCH
+cp $PWD/$JOB.inp .
+\$ORCA $JOB.inp >> $PWD/$JOB.out
+
+# done, now copy back wanted files.
+cp $JOB.xyz $PWD
+cp $JOB.gbw $PWD
+cp $JOB.cube $PWD
+cp $JOB.vpt2 $PWD
+cp $JOB.txt $PWD
+cp 01-Orbitals.molden $PWD
+!EOF
+
+sbatch $SUBMIT
+#rm $SUBMIT
