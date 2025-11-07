@@ -1,0 +1,32 @@
+! PBE0 D3BJ Opt def2-TZVP
+
+%pal
+  nprocs 6
+end
+
+%maxcore 2000
+
+%geom
+  Constraints
+    { C 4 C }
+    { C 6 C }
+    { C 15 C }
+    { C 16 C }
+    { C 17 C }
+    { C 25 C }
+    { C 28 C }
+    { C 40 C }
+    { C 41 C }
+    { C 54 C }
+    { C 57 C }
+    { C 59 C }
+    { C 69 C }
+    { C 70 C }
+    { C 73 C }
+    { C 81 C }
+    { C 85 C }
+    { C 88 C }
+  end
+end
+
+* xyzfile -1 1 frame_6.xyz

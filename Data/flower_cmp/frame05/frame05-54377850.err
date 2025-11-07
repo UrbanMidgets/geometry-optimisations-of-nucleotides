@@ -1,0 +1,36 @@
+[node226:885931] *** Process received signal ***
+[node226:885931] Signal: Bus error (7)
+[node226:885931] Signal code: Non-existant physical address (2)
+[node226:885931] Failing at address: 0x7f925b19b420
+[node226:885931] [ 0] /lib64/libc.so.6(+0x3ebf0)[0x7f926c83ebf0]
+[node226:885931] [ 1] /software/kemi/openmpi/openmpi-4.1.1/lib/openmpi/mca_coll_libnbc.so(ompi_coll_libnbc_progress+0x0)[0x7f925b19b420]
+[node226:885931] [ 2] /software/kemi/openmpi/openmpi-4.1.1/lib/libopen-pal.so.40(opal_progress+0x2c)[0x7f926c06e6ac]
+[node226:885931] [ 3] /software/kemi/openmpi/openmpi-4.1.1/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv+0x365)[0x7f926055c0d5]
+[node226:885931] [ 4] /software/kemi/openmpi/openmpi-4.1.1/lib/libmpi.so.40(ompi_coll_base_allreduce_intra_redscat_allgather+0xb8e)[0x7f926ce64dbe]
+[node226:885931] [ 5] /software/kemi/openmpi/openmpi-4.1.1/lib/openmpi/mca_coll_tuned.so(ompi_coll_tuned_allreduce_intra_dec_fixed+0x59)[0x7f925bbeb5f9]
+[node226:885931] [ 6] /software/kemi/openmpi/openmpi-4.1.1/lib/libmpi.so.40(PMPI_Allreduce+0x183)[0x7f926ce23713]
+[node226:885931] [ 7] /lustre/hpc/software/kemi/Orca/orca_6_1_0/lib/liborca_tools_6_1_0_mpi.so.6(_Z13PAL_AllReduceIdEvRT_mN3PAL8ReduceOpENS2_13CommunicatorsE+0x15c)[0x7f9271c677ec]
+[node226:885931] [ 8] /lustre/hpc/software/kemi/Orca/orca_6_1_0/lib/liborca_tools_6_1_0_mpi.so.6(_ZNK15TChainOfSpheres18CalcExchangeMatrixEiP10TMatrixSymIdEP7TMatrixIdES5_bb+0x255a)[0x7f926defbaaa]
+[node226:885931] [ 9] /lustre/hpc/software/kemi/Orca/orca_6_1_0/lib/liborca_tools_6_1_0_mpi.so.6(_ZNK15TChainOfSpheres24CalcExchangeMatrix_SHARKER15TSharkInterfaceiP10TMatrixSymIdEP7TMatrixIdES7_bd+0x4ea)[0x7f926def6cca]
+[node226:885931] [10] /software/kemi/Orca/orca_6_1_0/orca_leanscf_mpi[0x429317]
+[node226:885931] [11] /software/kemi/Orca/orca_6_1_0/orca_leanscf_mpi[0x427c83]
+[node226:885931] [12] /software/kemi/Orca/orca_6_1_0/orca_leanscf_mpi[0x47c727]
+[node226:885931] [13] /software/kemi/Orca/orca_6_1_0/orca_leanscf_mpi[0x426917]
+[node226:885931] [14] /lib64/libc.so.6(+0x295d0)[0x7f926c8295d0]
+[node226:885931] [15] /lib64/libc.so.6(__libc_start_main+0x80)[0x7f926c829680]
+[node226:885931] [16] /software/kemi/Orca/orca_6_1_0/orca_leanscf_mpi[0x425f56]
+[node226:885931] *** End of error message ***
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 5 with PID 885931 on node node226 exited on signal 7 (Bus error).
+--------------------------------------------------------------------------
+[file orca_tools/qcmsg.cpp, line 394]: 
+  .... aborting the run
+
+cp: cannot stat 'frame05.cube': No such file or directory
+cp: cannot stat 'frame05.vpt2': No such file or directory
+cp: cannot stat 'frame05.txt': No such file or directory
+cp: cannot stat '01-Orbitals.molden': No such file or directory

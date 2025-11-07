@@ -1,0 +1,8 @@
+[file orca_main/main_input_geom_basis.cpp, line 249]: Element name/number, dummy atom or point charge expected in COORDS ATOM-NO 1
+
+cp: cannot stat 'frame_8_ma.xyz': No such file or directory
+cp: cannot stat 'frame_8_ma.gbw': No such file or directory
+cp: cannot stat 'frame_8_ma.cube': No such file or directory
+cp: cannot stat 'frame_8_ma.vpt2': No such file or directory
+cp: cannot stat 'frame_8_ma.txt': No such file or directory
+cp: cannot stat '01-Orbitals.molden': No such file or directory
