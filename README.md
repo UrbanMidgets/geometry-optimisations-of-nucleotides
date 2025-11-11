@@ -133,7 +133,7 @@ If you use this code in your research, please cite:
   author = {Shamim Ekramullah},
   title = {Geometry Optimisations of Nucleotides},
   year = {2025},
-  url = {https://github.com/yourusername/geometry-optimisations-of-nucleotides}
+  url = {https://github.com/UrbanMidgets/geometry-optimisations-of-nucleotides}
 }
 ```
 
