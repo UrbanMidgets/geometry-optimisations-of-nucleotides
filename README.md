@@ -50,7 +50,7 @@ Each nucleotide directory (`flower_amp/`, `flower_cmp/`, etc.) contains:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/geometry-optimisations-of-nucleotides.git
+git clone https://github.com/UrbanMidgets/geometry-optimisations-of-nucleotides.git
 cd geometry-optimisations-of-nucleotides
 ```
 
