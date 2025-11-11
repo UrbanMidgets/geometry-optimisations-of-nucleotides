@@ -1,6 +1,6 @@
 # Geometry Optimisations of Nucleotides
 
-Repository containing data and tools for PUK (Parallel UK-Shell) in geometry optimisations of mononucleotides on slab Si-O surface (001).
+Repository containing data and tools for project in geometry optimisations of mononucleotides on slab Si-O surface (001).
 
 ## Repository Structure
 
